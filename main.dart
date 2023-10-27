@@ -1,109 +1,226 @@
-import 'package:facebook_reaction_animation/fb_reaction_box.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(MainApp());
+import 'home_page_model.dart';
+export 'home_page_model.dart';
 
-class MainApp extends StatelessWidget {
+class HomePageWidget extends StatefulWidget {
+  const HomePageWidget({Key? key}) : super(key: key);
+
+  @override
+  _HomePageWidgetState createState() => _HomePageWidgetState();
+}
+
+class _HomePageWidgetState extends State<HomePageWidget> {
+  late HomePageModel _model;
+
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _model = createModel(context, () => HomePageModel());
+
+    _model.textController1 ??= TextEditingController();
+    _model.textFieldFocusNode1 ??= FocusNode();
+    _model.textController2 ??= TextEditingController();
+    _model.textFieldFocusNode2 ??= FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _model.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Facebook Reactions by Flutter',
-      theme: ThemeData(primaryColor: Color(0xff3b5998)),
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('MAIN'),
-          centerTitle: true,
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
         ),
-        body: MainScreen(),
-      ),
-    );
-  }
-}
+      );
+    }
 
-class MainScreen extends StatefulWidget {
-  @override
-  State createState() => MainScreenState();
-}
-
-class MainScreenState extends State<MainScreen> {
-  static List<double> timeDelays = [1.0, 2.0, 3.0, 4.0, 5.0];
-  int selectedIndex = 0;
-
-  void onSpeedSettingPress(int index) {
-    timeDilation = timeDelays[index];
-    setState(() {
-      selectedIndex = index;
-    });
-  }
-
-  List<Widget> buildList() {
-    final List<Widget> list = [
-      Text(
-        'SPEED:',
-        style: TextStyle(fontSize: 12.0, fontWeight: FontWeight.bold),
-      )
-    ];
-    timeDelays.asMap().forEach((index, delay) {
-      list.add(Container(
-        child: GestureDetector(
-          onTap: () => onSpeedSettingPress(index),
-          child: Container(
-            child: Text(delay.toString(), style: TextStyle(color: Colors.white)),
-            padding: EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-              color: index == selectedIndex ? Color(0xff3b5998) : Color(0xffDAA520),
-              borderRadius: BorderRadius.circular(20.0),
+    return GestureDetector(
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(50),
+          child: AppBar(
+            backgroundColor: FlutterFlowTheme.of(context).primary,
+            automaticallyImplyLeading: false,
+            title: Align(
+              alignment: AlignmentDirectional(-1.00, -1.00),
+              child: Text(
+                'Hi There!',
+                style: FlutterFlowTheme.of(context).headlineMedium.override(
+                      fontFamily: 'Outfit',
+                      color: Colors.white,
+                      fontSize: 22,
+                    ),
+              ),
             ),
+            actions: [],
+            centerTitle: false,
+            elevation: 2,
           ),
         ),
-        margin: EdgeInsets.all(5.0),
-      ));
-    });
-    return list;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      child: Center(
-          child: Column(
-        children: <Widget>[
-          Container(
-            child: Row(children: buildList()),
-            margin: EdgeInsets.only(left: 20.0, right: 20.0, top: 20.0, bottom: 10.0),
+        body: SafeArea(
+          top: true,
+          child: Stack(
+            children: [
+              Align(
+                alignment: AlignmentDirectional(-0.90, -0.90),
+                child: Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
+                  child: Container(
+                    width: 200,
+                    child: TextFormField(
+                      controller: _model.textController1,
+                      focusNode: _model.textFieldFocusNode1,
+                      autofocus: true,
+                      obscureText: false,
+                      decoration: InputDecoration(
+                        labelText: 'Label here...',
+                        labelStyle: FlutterFlowTheme.of(context).labelMedium,
+                        hintStyle: FlutterFlowTheme.of(context).labelMedium,
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xFF28446B),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primary,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).error,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).error,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      style: FlutterFlowTheme.of(context).bodyMedium,
+                      validator:
+                          _model.textController1Validator.asValidator(context),
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: AlignmentDirectional(0.88, -0.70),
+                child: Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(8, 0, 8, 0),
+                  child: Container(
+                    width: 200,
+                    child: TextFormField(
+                      controller: _model.textController2,
+                      focusNode: _model.textFieldFocusNode2,
+                      autofocus: true,
+                      obscureText: false,
+                      decoration: InputDecoration(
+                        labelText: 'Label here...',
+                        labelStyle: FlutterFlowTheme.of(context).labelMedium,
+                        hintStyle: FlutterFlowTheme.of(context).labelMedium,
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xFF476998),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).primary,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).error,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: FlutterFlowTheme.of(context).error,
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                      ),
+                      style: FlutterFlowTheme.of(context).bodyMedium,
+                      validator:
+                          _model.textController2Validator.asValidator(context),
+                    ),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: AlignmentDirectional(0.00, 1.11),
+                child: Container(
+                  width: 393,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Color(0xFF0F3265),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: AlignmentDirectional(0.95, 1.07),
+                child: FFButtonWidget(
+                  onPressed: () {
+                    print('Button pressed ...');
+                  },
+                  text: 'Send',
+                  options: FFButtonOptions(
+                    height: 31,
+                    padding: EdgeInsetsDirectional.fromSTEB(24, 0, 24, 0),
+                    iconPadding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
+                    color: FlutterFlowTheme.of(context).primary,
+                    textStyle: FlutterFlowTheme.of(context).titleSmall.override(
+                          fontFamily: 'Readex Pro',
+                          color: Colors.white,
+                        ),
+                    elevation: 3,
+                    borderSide: BorderSide(
+                      color: Colors.transparent,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                ),
+              ),
+            ],
           ),
-          Container(
-            height: 15.0,
-          ),
-          buildButton(context, 'Facebook reactions animation', FbReactionBox())
-        ],
-      )),
-    );
-  }
-
-  Widget buildButton(BuildContext context, String name, StatelessWidget screenTo) {
-    return TextButton(
-      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => screenTo)),
-      child: Container(
-        child: Text(
-          name,
-          style: TextStyle(color: Colors.white, fontSize: 16.0),
-          textAlign: TextAlign.center,
-        ),
-        width: 270.0,
-      ),
-      style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.resolveWith<Color>(
-          (Set<MaterialState> states) {
-            if (states.contains(MaterialState.pressed)) return Color(0xff3b5998).withOpacity(0.8);
-            return Color(0xff3b5998);
-          },
-        ),
-        splashFactory: NoSplash.splashFactory,
-        padding: MaterialStateProperty.all<EdgeInsets>(
-          EdgeInsets.fromLTRB(30, 15, 30, 15),
         ),
       ),
     );
