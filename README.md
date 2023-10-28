@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains a Machine Learning model built from scratch to analyze user emotions based on their input. The model is integrated with a React front-end and a Flask back-end.
+This repository contains a Machine Learning model built from scratch to analyze user emotions based on their input.The model will give score for sadness, anger, joy, surprise, fear and love for the input. The model is combined with a React front-end and a Flask back-end.
 
 ## Features
 
@@ -12,4 +12,4 @@ This repository contains a Machine Learning model built from scratch to analyze 
 
 ## Model
 
-The ML model is built from scratch using Python's scikit-learn library.
+The ML model is built from scratch using Python's scikit-learn,nltk and tensorflow library.
