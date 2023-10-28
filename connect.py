@@ -1,8 +1,13 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from keras.models import load_model
+import json
 
 app = Flask(__name__)
 CORS(app)
+
+# Load the Keras model
+model_final = load_model('C:/Users/VaishakhRaveendran/Desktop/Sandstorm/model/model.tf')
 
 @app.route('/save_messages', methods=['POST'])
 def save_messages():
@@ -10,10 +15,20 @@ def save_messages():
         data = request.get_json()
         messages = data.get('messages', [])
 
-        # Do something with the messages, e.g., save them to a database or process them
-        print(messages)
+        
+        text_data = [message['text'] for message in messages]
 
-        return jsonify({"message": "Messages saved successfully"})
+        Emotions = ['sadness', 'joy', 'love', 'anger', 'fear', 'Surprise']
+        print(text_data[-1])
+        Scores = model_final.predict(list(text_data[-1]))
+        Card = {}
+        for scores, emotion in zip(Scores[0], Emotions):
+            Card[emotion] = str(scores) 
+
+    
+        print(Card)
+        return jsonify({"predictions": Card})
+
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
