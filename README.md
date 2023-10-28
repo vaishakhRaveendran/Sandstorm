@@ -12,4 +12,4 @@ This repository contains a Machine Learning model built from scratch to analyze 
 
 ## Model
 
-The ML model is built from scratch using Python's scikit-learn,nltk and tensorflow library.
+The ML model is built from scratch using Python's scikit-learn,nltk and tensorflow library.The model keeps lstm and conv1D layer.
