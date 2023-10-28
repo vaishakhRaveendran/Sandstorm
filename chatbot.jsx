@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Chatbot = () => {
     const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState([]);
-    const [waitingForAnswer, setWaitingForAnswer] = useState(false);
+    const [messages, setMessages] = useState([
+        { text: "Hello! How was your day?", user: 'bot' }
+    ]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+    const [displayedMessage, setDisplayedMessage] = useState(null);
     const questions = [
-        "Hello! How was your day?",
         "Is there something that's been bothering you or making you feel down?",
         "How are you feeling right now, in this moment?",
         "Is there anything in particular you'd like to talk about?",
     ];
+
+    useEffect(() => {
+        if (messages.length > 0) {
+            setDisplayedMessage(messages[messages.length - 1]);
+        }
+    }, [messages]);
 
     const handleInputChange = (e) => {
         setMessage(e.target.value);
@@ -19,7 +26,7 @@ const Chatbot = () => {
 
     const handleBotResponse = (responseText) => {
         const newBotMessage = {
-            text: responseText,
+            text1: responseText,
             user: 'bot',
         };
         setMessages([...messages, newBotMessage]);
@@ -36,33 +43,32 @@ const Chatbot = () => {
             setMessages([...messages, newUserMessage]);
             setMessage('');
 
-            if (waitingForAnswer) {
-                // Handle the user's answer to the previous question
-                handleBotResponse(`You answered: ${message}`);
+            // Handle the user's answer to the current question
+            handleBotResponse(`You answered: ${message}`);
 
-                // Now, ask the next question or end the conversation
-                setWaitingForAnswer(false);
+            if (currentQuestionIndex <= questions.length + 1) {
+                // If there are more questions, set the next question index
+                setCurrentQuestionIndex(currentQuestionIndex + 1);
 
-                if (currentQuestionIndex < questions.length - 1) {
-                    setCurrentQuestionIndex(currentQuestionIndex + 1);
+                // Display the next question after a delay
+                setTimeout(() => {
                     handleBotResponse(questions[currentQuestionIndex]);
-                    setWaitingForAnswer(true);
-                } else {
-                    // End the conversation
-                }
+                }, 1000); // Delay next question
+            } 
+            // else {
+            //     // End the conversation or provide a completion message
+            //     setTimeout(() => {
+            //         handleBotResponse("Thank you for the conversation. Feel free to ask more questions.");
+            //     }, 1000);
+            // }
 
-                // If needed, you can also send the user's response to the server here
-                try {
-                    await axios.post('http://localhost:8000/save_messages', {
-                        messages: [...messages, newUserMessage],
-                    });
-                } catch (error) {
-                    console.error('Error sending messages to the server:', error);
-                }
-            } else {
-                // Ask the initial question
-                handleBotResponse(questions[currentQuestionIndex]);
-                setWaitingForAnswer(true);
+            // If needed, you can send the user's response to the server here
+            try {
+                await axios.post('http://your-flask-server-url/save_messages', {
+                    messages: [...messages, newUserMessage],
+                });
+            } catch (error) {
+                console.error('Error sending messages to the server:', error);
             }
         }
     };
@@ -70,21 +76,22 @@ const Chatbot = () => {
     return (
         <div>
             <div>
-                <div>
-                    {messages.map((msg, index) => (
-                        <div key={index} className={msg.user === 'user' ? 'user-message' : 'bot-message'}>
-                            {msg.text}
-                        </div>
-                    ))}
+                <div className='input-container'>
+                    {displayedMessage && (
+                        <div className={displayedMessage.user === 'user' ? 'user-message' : 'bot-message'}>
+                        {displayedMessage.text}
+                        {displayedMessage.text1 && (
+                            <div>{displayedMessage.text1}</div>
+                        )}
+                    </div>
+                    )}
                 </div>
-            </div>
-            <div>
-                <div className="bot-message">{questions[currentQuestionIndex]}</div>
             </div>
             <form onSubmit={handleSubmit}>
                 <input type="text" value={message} onChange={handleInputChange} />
                 <button type="submit">Send</button>
             </form>
+
         </div>
     );
 };
