@@ -13,4 +13,4 @@ This project features a custom-built Machine Learning model designed to assess u
 
 ## Model
 
-The ML model is built from scratch using Python's scikit-learn, nltk and tensorflow library.The model keeps lstm and conv1D layer.
+The ML model is built from scratch using Python's scikit-learn, nltk and tensorflow library.The model uses LSTM and conv1D layers.
