@@ -6,7 +6,7 @@ This project features a custom-built Machine Learning model designed to assess u
 
 ## Features
 
-- Analyzes user emotions from text input.
+- Analyzes user emotions from text input using a web api.
 - Integrates with a user-friendly React front-end for easy input.
 - Utilizes Flask as a back-end to process and serve model predictions.
 - Plots using chart.js
