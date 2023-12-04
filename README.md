@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project features a custom-built Machine Learning model designed to assess user emotions from their input. The model assigns scores for emotions like sadness, anger, joy, surprise, fear, and love based on user responses to a series of questions about their day. It computes the average emotion scores and presents the results using pie charts and bar plots, offering insights into the user's emotional state.
+This project features a custom-built Machine Learning model designed to assess user emotions from their input. The model assigns scores for emotions like sadness, anger, joy, surprise, fear, and love based on user responses to a series of questions about their day. It computes the average emotion scores and presents the results using pie charts and bar plots, offering insights into the user's emotional state.We used Flask backend.
 
 ## Features
 
